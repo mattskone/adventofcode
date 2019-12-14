@@ -1,5 +1,5 @@
 '''
-Solution to https://adventofcode.com/2019/day/1
+Solution to https://adventofcode.com/2019/day/1#part2
 
 Run with full or relative path to input file.  Eg/
 
@@ -20,8 +20,18 @@ def clean_input(mass):
         return 0
 
 
-def compute_fuel_requirement(mass):
-    return max([mass / 3 - 2, 0])
+def compute_fuel_requirement(mass, total=0):
+    '''Compute the fuel requirement for a spacecraft
+    Args:
+      mass - (int) compute the fuel required for this mass
+      total - (int) the accumulated total of spacecraft + fuel mass
+    '''
+
+    if mass <= 0:
+        return total
+
+    new_fuel_requirement = max([mass / 3 - 2, 0])
+    return compute_fuel_requirement(new_fuel_requirement, total + new_fuel_requirement)
 
 
 def main():
