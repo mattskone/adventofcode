@@ -24,7 +24,7 @@ def compute_fuel_requirement(mass, total=0):
     '''Compute the fuel requirement for a spacecraft
     Args:
       mass - (int) compute the fuel required for this mass
-      total - (int) the accumulated total of spacecraft + fuel mass
+      total - (int) the running total of fuel mass
     '''
 
     if mass <= 0:
