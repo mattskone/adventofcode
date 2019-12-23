@@ -2,7 +2,7 @@ import sys
 
 
 def get_vertices(path):
-    vertices = []
+    vertices = {}
     x, y = 0, 0
     for step in path:
         step_direction = step[0]
@@ -17,13 +17,25 @@ def get_vertices(path):
             elif step_direction == 'L':
                 x -= 1
 
-            vertices.append((x, y))
+            if x in vertices.keys():
+                vertices[x].append(y)
+            else:
+                vertices[x] = [y]
 
     return vertices
 
 
 def get_intersections(vertices1, vertices2):
-    return [v for v in vertices1 if v in vertices2]
+    intersections = []
+    for x in vertices1.keys():
+        if x in vertices2.keys():
+            for y in vertices1[x]:
+                if y in vertices2[x]:
+                    intersections.append((x, y))
+        else:
+            continue
+
+    return intersections
 
 
 def get_distance(vertex):
