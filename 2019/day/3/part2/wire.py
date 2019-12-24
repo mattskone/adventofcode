@@ -1,12 +1,15 @@
 import sys
 
+
 def get_vertices(path):
-    vertices = []
+    steps = 0
+    vertices = {}
     x, y = 0, 0
     for step in path:
         step_direction = step[0]
         step_size = int(step[1:])
         for i in range(1, step_size + 1):
+            steps += 1
             if step_direction == 'U':
                 y += 1
             elif step_direction == 'D':
@@ -16,23 +19,32 @@ def get_vertices(path):
             elif step_direction == 'L':
                 x -= 1
 
-            vertices.append((x, y))
-    
+            if x in vertices.keys():
+                vertices[x].append((y, steps))
+            else:
+                vertices[x] = [((y, steps))]
+
     return vertices
 
 
-def get_intersections(vertices1, vertices2):
-    return [v for v in vertices1 if v in vertices2]
+def get_intersection_distances(vertices1, vertices2):
+    intersections = []
+    for x in vertices1.keys():
+        if x in vertices2.keys():
+            for y1, steps1 in vertices1[x]:
+                for y2, steps2 in vertices2[x]:
+                    if y1 == y2:
+                        intersections.append(steps1 + steps2)
+        else:
+            continue
 
+    return intersections
 
-def get_distance(vertex):
-    return abs(vertex[0]) + abs(vertex[1])
 
 def main(wire1, wire2):
     vertices1 = get_vertices(wire1)
     vertices2 = get_vertices(wire2)
-    intersections = get_intersections(vertices1, vertices2)
-    distances = list(map(get_distance, intersections))
+    distances = get_intersection_distances(vertices1, vertices2)
 
     return min(distances)
 
